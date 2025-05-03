@@ -88,4 +88,24 @@ class MovieRestController {
     ) throws MethodArgumentNotValidException, ItemNotFoundException {
         return movieService.createMovie(movieCreate);
     }
+
+    @DeleteMapping(value = "/{id}")
+    @Operation(summary = "Delete a Movie")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    void deleteMovie(
+            @Valid @PathVariable @Positive long id
+    ) throws MethodArgumentNotValidException{
+        movieService.deleteMovie(id);
+    }
+
+    @PutMapping(value = "/{id}")
+    @Operation(summary = "Update a Movie")
+    @ResponseStatus(HttpStatus.OK)
+    @ApiResponse(responseCode = "404", description = "Movie not found", content = @Content)
+    ResponseEntity<MovieDTO> putMovie(
+            @Valid @PathVariable @Positive long id,
+            @Valid @RequestBody MovieCreateTDO movieCreate
+    ) throws MethodArgumentNotValidException, ItemNotFoundException {
+        return ResponseEntity.of(movieService.updateMovie(id, movieCreate));
+    }
 }

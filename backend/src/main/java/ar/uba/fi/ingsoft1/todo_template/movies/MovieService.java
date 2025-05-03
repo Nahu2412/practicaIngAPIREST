@@ -58,6 +58,16 @@ class MovieService {
                 .toList();
     }
 
+    void deleteMovie(long id){movieRepository.deleteById(id);}
+
+    Optional<MovieDTO> updateMovie(long id, MovieCreateTDO movieCreate) throws ItemNotFoundException {
+        if (!movieRepository.existsById(id)) {
+            return Optional.empty();
+        }
+        var saved = movieRepository.save(movieCreate.asMovie(id));
+        return Optional.of(new MovieDTO(saved));
+    }
+
     /*
     List<MovieDTO> getMovieByCategory(String category){
         return movieRepository.findByCategory(category)
