@@ -1,6 +1,8 @@
 package ar.uba.fi.ingsoft1.todo_template.movies;
 
+import ar.uba.fi.ingsoft1.todo_template.common.exception.ItemNotFoundException;
 import ar.uba.fi.ingsoft1.todo_template.movies.MoviesDTO;
+import ar.uba.fi.ingsoft1.todo_template.tasks.TaskCreateDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -36,4 +38,23 @@ public class MoviesRestController {
         return moviesService.getMovies(pageable);
     }
 
+    @DeleteMapping(value = "/{id}")
+    @Operation(summary = "Delete a Movie")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    void deleteMovie(
+            @Valid @PathVariable @Positive long id
+    ) throws MethodArgumentNotValidException{
+        moviesService.deleteMovie(id);
+    }
+
+    @PutMapping(value = "/{id}")
+    @Operation(summary = "Update a Movie")
+    @ResponseStatus(HttpStatus.OK)
+    @ApiResponse(responseCode = "404", description = "Movie not found", content = @Content)
+    ResponseEntity<MoviesDTO> putMovie(
+            @Valid @PathVariable @Positive long id,
+            @Valid @RequestBody MovieCreateDTO movieCreate
+    ) throws MethodArgumentNotValidException, ItemNotFoundException {
+        return ResponseEntity.of(movieService.updateTask(id, movieCreate));
+    }
 }

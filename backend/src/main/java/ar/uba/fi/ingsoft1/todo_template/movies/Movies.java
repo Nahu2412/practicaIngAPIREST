@@ -24,18 +24,18 @@ public class Movies {
 
     @Column(unique = true, nullable = false)
     private String title;
-    /*
+
     @Column(nullable = false)
-    private int year;*/
+    private long movie_year;
 
     @Column(nullable = false)
     private String category;
 
     public Movies() {}
 
-    public Movies(String name, int year,String category) {
+    public Movies(String name, long year,String category) {
         this.title = name;
-        /*this.year = year;*/
+        this.movie_year = year;
         this.category = category;
     }
 
@@ -44,10 +44,10 @@ public class Movies {
         return this.title;
     }
 
-    /*
-    public int getYear(){
-        return this.year;
-    }*/
+
+    public long getMovieYear(){
+        return this.movie_year;
+    }
 
     public String getCategory(){
         return this.category;
