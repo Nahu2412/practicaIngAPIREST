@@ -42,6 +42,10 @@ public class RefreshTokenService {
         return result.filter(RefreshToken::isValid);
     }
 
+    public void deleteByUser(User user) {
+        refreshTokenRepository.deleteByUser(user);
+    }
+
     String getRandomString() {
         SecureRandom random = new SecureRandom();
         byte[] randomBytes = new byte[this.byteSize];
