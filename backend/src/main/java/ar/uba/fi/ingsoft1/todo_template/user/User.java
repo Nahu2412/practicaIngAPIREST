@@ -33,7 +33,7 @@ public class User implements UserDetails, UserCredentials {
     public User(String username, String password) {
         this.username = username;
         this.password = password;
-        this.role = "USER";
+        this.role = "ROLE_USER";
     }
 
     @Override
@@ -58,6 +58,10 @@ public class User implements UserDetails, UserCredentials {
 
     public String getRole() {
         return role;
+    }
+
+    public void promover(){
+        this.role = "ROLE_ADMIN";
     }
 
     public Long getId(){return id;}

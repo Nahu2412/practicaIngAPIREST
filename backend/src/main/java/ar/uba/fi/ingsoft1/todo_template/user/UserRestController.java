@@ -4,10 +4,13 @@ import ar.uba.fi.ingsoft1.todo_template.common.exception.ItemNotFoundException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.NonNull;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
@@ -65,4 +68,25 @@ class UserRestController {
         var user = userService.followTo(id,target);
         return ResponseEntity.ok(user);
     }
+
+    @PostMapping("/admin")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<?> createAdmin(
+            @RequestBody UserCreateDTO data
+    ){
+        userService.createAdmin(data);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+
+    @DeleteMapping("/admin/{username}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<?> deleteAdmin(
+            @PathVariable String username
+    ){
+        userService.deleteAdmin(username);
+        return ResponseEntity.noContent().build();
+    }
+
+
 }

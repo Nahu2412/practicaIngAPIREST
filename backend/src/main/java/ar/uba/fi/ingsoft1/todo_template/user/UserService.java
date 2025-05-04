@@ -5,6 +5,7 @@ import ar.uba.fi.ingsoft1.todo_template.config.security.JwtService;
 import ar.uba.fi.ingsoft1.todo_template.config.security.JwtUserDetails;
 import ar.uba.fi.ingsoft1.todo_template.user.refresh_token.RefreshToken;
 import ar.uba.fi.ingsoft1.todo_template.user.refresh_token.RefreshTokenService;
+import org.antlr.v4.runtime.Token;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -13,6 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import org.springframework.security.access.AccessDeniedException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -112,4 +114,20 @@ class UserService implements UserDetailsService {
         user_target.addFollower(id);
         return new UserDTO(user);
     }
+
+    public void createAdmin(UserCreateDTO data){
+        User user = new User(data.username(),passwordEncoder.encode(data.password()));
+        user.promover();
+        userRepository.save(user);
+    }
+
+    public void deleteAdmin(String username){
+        User user = userRepository.findByUsername(username)
+                        .orElseThrow(() -> new UsernameNotFoundException("No existe"));
+        if(!user.getRole().equals("ROLE_ADMIN")){
+            throw new AccessDeniedException("No es un administrador");
+        }
+        userRepository.delete(user);
+    }
+
 }
