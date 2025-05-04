@@ -70,14 +70,8 @@ class MovieService {
         return Optional.of(new MovieDTO(saved));
     }
 
-    Optional<MovieRatingDTO> rateMovie(@Valid @Positive long id, @Valid MovieCreateTDO movieCreate) {
+    Optional<MovieRatingDTO> rateMovie(@Valid @Positive long id, @Valid MovieRatingTDO movieRate) {
+        return Optional.of(movieRate);
     }
 
-    /*
-    List<MovieDTO> getMovieByCategory(String category){
-        return movieRepository.findByCategory(category)
-                .stream()
-                .map(MovieDTO::new)
-                .toList();
-    }*/
 }
