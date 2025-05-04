@@ -1,9 +1,10 @@
 package ar.uba.fi.ingsoft1.todo_template.user;
 
 public record UserDTO(
-        String username
+        String username,
+        long id
 ) {
     UserDTO(User user){
-        this(user.getUsername());
+        this(user.getUsername(), user.getId());
     }
 }

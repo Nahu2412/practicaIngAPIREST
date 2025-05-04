@@ -13,6 +13,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -79,4 +81,35 @@ class UserService implements UserDetailsService {
         return new TokenDTO(accessToken, refreshToken.value());
     }
 
+    List<UserDTO> getFollowers(long id) throws ItemNotFoundException {
+        List<UserDTO> followers = new ArrayList<>();
+        var user = userRepository.findById(id).orElseThrow(() -> new ItemNotFoundException("user",id));
+        var user_followers = user.getFollowers();
+        for (Long fID: user_followers){
+            User f = userRepository.findById(fID).orElseThrow(() -> new ItemNotFoundException("user", fID));
+            var follower = new UserDTO(f);
+            followers.add(follower);
+        }
+        return followers;
+    }
+
+    List<UserDTO> getFollowing(long id) throws ItemNotFoundException {
+        List<UserDTO> following = new ArrayList<>();
+        var user = userRepository.findById(id).orElseThrow(() -> new ItemNotFoundException("user",id));
+        var user_following = user.getFollowing();
+        for (Long fID: user_following){
+            User f = userRepository.findById(fID).orElseThrow(() -> new ItemNotFoundException("user", fID));
+            var follow = new UserDTO(f);
+            following.add(follow);
+        }
+        return following;
+    }
+
+    UserDTO followTo(long id, long target) throws ItemNotFoundException{
+        var user = userRepository.findById(id).orElseThrow(() -> new ItemNotFoundException("user", id));
+        var user_target = userRepository.findById(target).orElseThrow(() -> new ItemNotFoundException("user", target));
+        user.addFollowing(target);
+        user_target.addFollower(id);
+        return new UserDTO(user);
+    }
 }

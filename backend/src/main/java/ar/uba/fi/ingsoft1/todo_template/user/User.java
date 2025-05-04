@@ -1,18 +1,11 @@
 package ar.uba.fi.ingsoft1.todo_template.user;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 @Entity(name = "users")
 public class User implements UserDetails, UserCredentials {
@@ -29,6 +22,11 @@ public class User implements UserDetails, UserCredentials {
 
     @Column(nullable = false)
     private String role;
+
+    @ElementCollection
+    private List<Long> followers = new ArrayList<>();
+    @ElementCollection
+    private List<Long> following = new ArrayList<>();
 
     public User() {}
 
@@ -61,6 +59,14 @@ public class User implements UserDetails, UserCredentials {
     public String getRole() {
         return role;
     }
+
+    public Long getId(){return id;}
+
+    public List<Long> getFollowers(){return followers;}
+    public List<Long> getFollowing(){return following;}
+
+    public void addFollower(Long id){followers.add(id);}
+    public void addFollowing(Long id){following.add(id);}
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
