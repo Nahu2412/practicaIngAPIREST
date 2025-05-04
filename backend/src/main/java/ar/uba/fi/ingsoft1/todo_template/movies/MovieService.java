@@ -1,7 +1,6 @@
 package ar.uba.fi.ingsoft1.todo_template.movies;
 
 import ar.uba.fi.ingsoft1.todo_template.common.exception.ItemNotFoundException;
-import ar.uba.fi.ingsoft1.todo_template.projects.ProjectDTO;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Positive;
 import org.springframework.data.domain.Page;
@@ -25,7 +24,7 @@ class MovieService {
         return movieRepository.findAll(pageable).map(MovieDTO::new);
     }
 
-    MovieDTO createMovie(MovieCreateTDO movieCreate) throws ItemNotFoundException {
+    MovieDTO createMovie(MovieCreateDTO movieCreate) throws ItemNotFoundException {
         return new MovieDTO(movieRepository.save(movieCreate.asMovie()));
     }
 
@@ -62,7 +61,7 @@ class MovieService {
 
     void deleteMovie(long id){movieRepository.deleteById(id);}
 
-    Optional<MovieDTO> updateMovie(long id, MovieCreateTDO movieCreate) throws ItemNotFoundException {
+    Optional<MovieDTO> updateMovie(long id, MovieCreateDTO movieCreate) throws ItemNotFoundException {
         if (!movieRepository.existsById(id)) {
             return Optional.empty();
         }
@@ -70,8 +69,8 @@ class MovieService {
         return Optional.of(new MovieDTO(saved));
     }
 
-    Optional<MovieRatingDTO> rateMovie(@Valid @Positive long id, @Valid MovieRatingTDO movieRate) {
-        return Optional.of(movieRate);
+    Optional<MovieRatingDTO> rateMovie(@Valid @Positive long id, @Valid MovieRatingDTO movieRate) {
+        return Optional.of(movieRate); //Dummy hasta obtener datos de MovieRatingRepository o similar
     }
 
 }

@@ -1,7 +1,6 @@
 package ar.uba.fi.ingsoft1.todo_template.movies;
 
 import ar.uba.fi.ingsoft1.todo_template.common.exception.ItemNotFoundException;
-import ar.uba.fi.ingsoft1.todo_template.projects.ProjectDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -14,12 +13,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Optional;
 
 
 @RestController
@@ -69,7 +64,7 @@ class MovieRestController {
     @Operation(summary = "Create a new movie")
     @ResponseStatus(HttpStatus.CREATED)
     MovieDTO createMovie(
-            @Valid @RequestBody MovieCreateTDO movieCreate
+            @Valid @RequestBody MovieCreateDTO movieCreate
     ) throws MethodArgumentNotValidException, ItemNotFoundException {
         return movieService.createMovie(movieCreate);
     }
@@ -89,7 +84,7 @@ class MovieRestController {
     @ApiResponse(responseCode = "404", description = "Movie not found", content = @Content)
     ResponseEntity<MovieDTO> putMovie(
             @Valid @PathVariable @Positive long id,
-            @Valid @RequestBody MovieCreateTDO movieCreate
+            @Valid @RequestBody MovieCreateDTO movieCreate
     ) throws MethodArgumentNotValidException, ItemNotFoundException {
         return ResponseEntity.of(movieService.updateMovie(id, movieCreate));
     }
