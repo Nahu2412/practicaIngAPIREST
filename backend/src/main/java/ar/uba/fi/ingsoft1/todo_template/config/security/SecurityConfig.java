@@ -23,7 +23,6 @@ import java.util.List;
 public class SecurityConfig {
 
     public static final String[] PUBLIC_ENDPOINTS = {"/users", "/sessions"};
-    public static final String[] USER_ENDPOINTS = {"/movies"};
 
     private final JwtAuthFilter authFilter;
 
@@ -45,11 +44,6 @@ public class SecurityConfig {
                         .requestMatchers("/error").permitAll()
                         .requestMatchers("/swagger-ui/**").permitAll()
                         .requestMatchers("/v3/api-docs/**").permitAll()
-                        .requestMatchers("/users/*").permitAll()
-                        .requestMatchers(HttpMethod.GET,"/movies").permitAll()
-                        .requestMatchers("/movies/*").permitAll()
-                        .requestMatchers("/users/*").permitAll()
-                        .requestMatchers(HttpMethod.POST,"/movies").permitAll()
                         .requestMatchers(PUBLIC_ENDPOINTS).permitAll()
                         .anyRequest().authenticated())
                 .sessionManagement(sessionManager -> sessionManager
