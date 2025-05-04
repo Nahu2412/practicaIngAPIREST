@@ -83,6 +83,42 @@ class UserService implements UserDetailsService {
         return new TokenDTO(accessToken, refreshToken.value());
     }
 
+    public UserProfileDTO getUserProfile(Long id) throws ItemNotFoundException {
+        var user = userRepository.findById(id)
+                .orElseThrow(() -> new ItemNotFoundException("user", id));
+        return new UserProfileDTO(user);
+    }
+
+    public UserProfileDTO editUserProfile(Long id, UserProfileDTO userProfileDTO) throws ItemNotFoundException {
+        var user = userRepository.findById(id)
+                .orElseThrow(() -> new ItemNotFoundException("user", id));
+
+        if (userProfileDTO.username() != null && !userProfileDTO.username().isEmpty()) {
+            user.setUsername(userProfileDTO.username());
+        }
+        if (userProfileDTO.firstName() != null && !userProfileDTO.firstName().isEmpty()) {
+            user.setFirstName(userProfileDTO.firstName());
+        }
+        if (userProfileDTO.lastName() != null && !userProfileDTO.lastName().isEmpty()) {
+            user.setLastName(userProfileDTO.lastName());
+        }
+        if (userProfileDTO.avatarUrl() != null && !userProfileDTO.avatarUrl().isEmpty()) {
+            user.setAvatarUrl(userProfileDTO.avatarUrl());
+        }
+
+        userRepository.save(user);
+        return new UserProfileDTO(user);
+    }
+
+    public void deleteUser(String username) {
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+
+        refreshTokenService.deleteByUser(user);
+        userRepository.delete(user);
+    }
+
+
     List<UserDTO> getFollowers(long id) throws ItemNotFoundException {
         List<UserDTO> followers = new ArrayList<>();
         var user = userRepository.findById(id).orElseThrow(() -> new ItemNotFoundException("user",id));
