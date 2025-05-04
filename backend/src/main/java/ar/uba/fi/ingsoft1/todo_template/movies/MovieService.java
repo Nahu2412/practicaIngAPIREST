@@ -2,6 +2,8 @@ package ar.uba.fi.ingsoft1.todo_template.movies;
 
 import ar.uba.fi.ingsoft1.todo_template.common.exception.ItemNotFoundException;
 import ar.uba.fi.ingsoft1.todo_template.projects.ProjectDTO;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Positive;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import jakarta.transaction.Transactional;
@@ -66,6 +68,9 @@ class MovieService {
         }
         var saved = movieRepository.save(movieCreate.asMovie(id));
         return Optional.of(new MovieDTO(saved));
+    }
+
+    Optional<MovieRatingDTO> rateMovie(@Valid @Positive long id, @Valid MovieCreateTDO movieCreate) {
     }
 
     /*

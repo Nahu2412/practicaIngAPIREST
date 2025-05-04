@@ -65,21 +65,6 @@ class MovieRestController {
         return ResponseEntity.ok(resultado);
     }
 
-    /*
-    @GetMapping(value = "/search", produces = "application/json")
-    @Operation(summary = "Get a movie by category")
-    @ResponseStatus(HttpStatus.OK)
-    @ApiResponse(responseCode = "404", description = "Movie not found", content = @Content)
-    ResponseEntity<?> getMovieByCategory(
-            @RequestParam String category
-    ) throws MethodArgumentNotValidException, ItemNotFoundException {
-        var resultado = movieService.getMovieByCategory(category);
-        if(resultado.isEmpty()){
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(resultado);
-    }*/
-
     @PostMapping(produces = "application/json")
     @Operation(summary = "Create a new movie")
     @ResponseStatus(HttpStatus.CREATED)
@@ -108,4 +93,16 @@ class MovieRestController {
     ) throws MethodArgumentNotValidException, ItemNotFoundException {
         return ResponseEntity.of(movieService.updateMovie(id, movieCreate));
     }
+
+    @PostMapping(value = "/{id}/rate")
+    @Operation(summary = "Rate a Movie")
+    @ResponseStatus(HttpStatus.OK)
+    @ApiResponse(responseCode = "404", description = "Movie not found", content = @Content)
+    ResponseEntity<MovieRatingDTO> rateMovie(
+            @Valid @PathVariable @Positive long id,
+            @Valid @RequestBody MovieRatingDTO movieRate
+    ) throws MethodArgumentNotValidException, ItemNotFoundException {
+        return ResponseEntity.of(movieService.rateMovie(id, movieRate));
+    }
+
 }
