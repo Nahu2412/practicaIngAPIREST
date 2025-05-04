@@ -16,7 +16,7 @@ public class MovieRating {
     private Long id;
 
     @Column(nullable = false)
-    private Float value;
+    private Long rating;
 
     @ManyToOne
     @JoinColumn(name = "movie_id")
@@ -28,11 +28,11 @@ public class MovieRating {
 
     MovieRating(){}
 
-    MovieRating(Long id, Movie movie, User user, Float value){
+    MovieRating(Long id, Movie movie, User user, Long rating){
         this.id = id;
         this.movie = movie;
         this.user = user;
-        this.value = value;
+        this.rating = rating;
     }
 
     public Long getId() {
@@ -46,8 +46,8 @@ public class MovieRating {
     public String getUsername() {
         return this.user.getUsername();
     }
-    public Float getValue() {
-        return this.value;
+    public Long getRating() {
+        return this.rating;
     }
 
 
