@@ -78,11 +78,22 @@ class UserRestController {
 
 
     @DeleteMapping("/admin/{username}")
+    @Operation(summary = "Eliminar a un admin")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> deleteAdmin(
             @PathVariable String username
     ){
         userService.deleteAdmin(username);
+        return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping("/{username}")
+    @Operation(summary = "Eliminar a un usuario")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<?> deleteUser(
+            @PathVariable String username
+    ) {
+        userService.deleteUser(username);
         return ResponseEntity.noContent().build();
     }
 

@@ -87,7 +87,7 @@ public class User implements UserDetails, UserCredentials {
     }
 
     public void promover(){
-        this.role = "ROLE_ADMIN";
+        this.role = "ADMIN";
     }
 
     public Long getId(){return id;}

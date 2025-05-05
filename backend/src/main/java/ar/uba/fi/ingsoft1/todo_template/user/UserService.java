@@ -152,7 +152,7 @@ class UserService implements UserDetailsService {
     }
 
     public void createAdmin(UserCreateDTO data){
-        User user = new User(data.username(),passwordEncoder.encode(data.password()));
+        User user = data.asUser(passwordEncoder::encode);
         user.promover();
         userRepository.save(user);
     }
@@ -160,9 +160,10 @@ class UserService implements UserDetailsService {
     public void deleteAdmin(String username){
         User user = userRepository.findByUsername(username)
                         .orElseThrow(() -> new UsernameNotFoundException("No existe"));
-        if(!user.getRole().equals("ROLE_ADMIN")){
+        if(!user.getRole().equals("ADMIN")){
             throw new AccessDeniedException("No es un administrador");
         }
+        refreshTokenService.deleteByUser(user);
         userRepository.delete(user);
     }
 
