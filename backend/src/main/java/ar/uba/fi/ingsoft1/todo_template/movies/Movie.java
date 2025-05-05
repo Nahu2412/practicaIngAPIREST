@@ -1,10 +1,9 @@
 package ar.uba.fi.ingsoft1.todo_template.movies;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
+import ar.uba.fi.ingsoft1.todo_template.actors.Actor;
+import jakarta.persistence.*;
+
+import java.util.List;
 
 @Entity
 public class Movie {
@@ -18,6 +17,9 @@ public class Movie {
 
     @Column
     private String category;
+
+    @ManyToMany
+    private List<Actor> actors;
 
     Movie(){}
 
